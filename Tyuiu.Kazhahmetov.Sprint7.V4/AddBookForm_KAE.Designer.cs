@@ -110,9 +110,9 @@
             // 
             // buttonOk_KAE
             // 
-            buttonOk_KAE.Location = new Point(100, 180);
+            buttonOk_KAE.Location = new Point(20, 180);
             buttonOk_KAE.Name = "buttonOk_KAE";
-            buttonOk_KAE.Size = new Size(75, 23);
+            buttonOk_KAE.Size = new Size(155, 23);
             buttonOk_KAE.TabIndex = 8;
             buttonOk_KAE.Text = "Добавить";
             buttonOk_KAE.UseVisualStyleBackColor = true;
@@ -130,8 +130,10 @@
             // 
             // AddBookForm_KAE
             // 
+            AcceptButton = buttonOk_KAE;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = buttonCancel_KAE;
             ClientSize = new Size(334, 211);
             Controls.Add(buttonCancel_KAE);
             Controls.Add(buttonOk_KAE);

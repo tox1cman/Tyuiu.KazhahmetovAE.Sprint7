@@ -19,6 +19,49 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         {
             InitializeComponent();
             NewBook = new Book();
+
+            textBoxTitle_KAE.TextChanged += CheckedFieldsTitle;
+            textBoxAuthor_KAE.TextChanged += CheckedFieldsAuthor;
+        }
+
+        private void UpdateAddButtonState()
+        {
+            bool titleOk = !string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text);
+            bool authorOk = !string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text);
+
+            buttonOk_KAE.Enabled = titleOk && authorOk;
+
+            if (buttonOk_KAE.Enabled)
+            {
+                buttonOk_KAE.Text = "✅ Добавить";
+            }
+            else if (titleOk)
+            {
+                buttonOk_KAE.Text = "❌ Добавьте Автора";
+            }
+            else if (authorOk)
+            {
+                buttonOk_KAE.Text = "❌ Добавьте Название";
+            }
+            else
+            {
+                buttonOk_KAE.Text = "❌ Заполните поля";
+            }
+        }
+
+
+        private void CheckedFieldsTitle(object sender, EventArgs e)
+        {
+            bool titleOk = !string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text);
+            textBoxTitle_KAE.BackColor = titleOk ? Color.White : Color.LightPink;
+            UpdateAddButtonState();
+        }
+
+        private void CheckedFieldsAuthor(object sender, EventArgs e)
+        {
+            bool authorOk = !string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text);
+            textBoxAuthor_KAE.BackColor = authorOk ? Color.White : Color.LightPink;
+            UpdateAddButtonState();
         }
 
         private void AddBookForm_KAE_Load(object sender, EventArgs e)
@@ -30,14 +73,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         {
             if (string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text))
             {
-                MessageBox.Show("Введите название книги!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text))
-            {
-                MessageBox.Show("Введите автора книги!", "Ошибка",
+                MessageBox.Show("Введите Название и Автора книги!", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }

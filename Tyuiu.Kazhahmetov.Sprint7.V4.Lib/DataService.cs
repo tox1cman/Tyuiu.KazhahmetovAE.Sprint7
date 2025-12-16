@@ -31,9 +31,12 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
     }
 
 
+
     public class LibraryService
     {
         private List<Book> books = new List<Book>(); // Список книг
+
+
 
         public void AddBook(Book book) // Добавить книгу
         {
@@ -56,5 +59,26 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             books.Add(new Book("Преступление и наказание", "Достоевский Ф.М.", 1866, "Роман"));
             books.Add(new Book("Мастер и Маргарита", "Булгаков М.А.", 1967, "Фэнтези"));
         }
+
+        public void RemoveBookAt(int index)
+        {
+            if (index >= 0 && index < books.Count)
+            {
+                books.RemoveAt(index);
+            }
+        }
+
+        public Book GetBookAt(int index)
+        {
+            if (index >= 0 && index <= books.Count)
+            {
+                return books[index];
+            }
+            return null;
+        }
+
     }
+
+
+    
 }
