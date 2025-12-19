@@ -8,12 +8,37 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
     public partial class FormMain_KAE : Form
     {
         private LibraryService libraryService;
+
         public FormMain_KAE()
         {
             InitializeComponent();
 
             libraryService = new LibraryService();
-            libraryService.AddTestBooks();
+
+
+            string savedPath = LoadLibraryPath();
+
+            bool loaded = false;
+
+            if (!string.IsNullOrEmpty(savedPath) && File.Exists(savedPath))
+            {
+                try
+                {
+                    libraryService.LoadFromCSV(savedPath);
+                    loaded = true;
+                }
+                catch
+                {
+                    
+                }
+            }
+
+  
+            if (!loaded)
+            {
+                libraryService.AddTestBooks();
+            }
+
 
             ShowBooks();
             UpdateBookCount();
@@ -153,7 +178,115 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 buttonAddBook_KAE_Click(sender, e);
                 e.Handled = true;
             }
+
+            else if (e.KeyCode == Keys.S && e.Control)
+            {
+                fileMenuSave_KAE_Click(sender, e);
+                e.Handled = true;
+            }
+
+            else if (e.KeyCode == Keys.O && e.Control)
+            {
+                fileMenuLoad_KAE_Click(sender, e);
+                e.Handled = true;
+            }
         }
+
+        private void fileMenuSave_KAE_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*";
+            saveDialog.Title = "Сохранить библиотеку";
+            saveDialog.DefaultExt = "csv";
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    libraryService.SaveToCSV(saveDialog.FileName);
+                    SaveLibraryPath(saveDialog.FileName); 
+                    MessageBox.Show($"Библиотека сохранена!", "Успех");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка");
+                }
+            }
+
+
+        }
+
+        private void fileMenuLoad_KAE_Click(object sender, EventArgs e)
+        {
+            if (libraryService.GetBookCount() > 0)
+            {
+                DialogResult result = MessageBox.Show(
+                    "Текущие книги будут удалены. Продолжить?",
+                    "Подтверждение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = "CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*";
+            openDialog.Title = "Загрузить библиотеку";
+
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    libraryService.LoadFromCSV(openDialog.FileName);
+                    SaveLibraryPath(openDialog.FileName);
+
+                    ShowBooks();
+                    UpdateBookCount();
+
+                    MessageBox.Show($"Библиотека загружена!", "Успех");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка");
+                }
+            }
+        }
+
+        private void buttonSave_KAE_Click(object sender, EventArgs e)
+        {
+            fileMenuSave_KAE_Click(sender, e);
+        }
+
+        private void buttonLoad_KAE_Click(object sender, EventArgs e)
+        {
+            fileMenuLoad_KAE_Click(sender, e);
+        }
+
+        private void SaveLibraryPath(string path)
+        {
+            try
+            {
+                File.WriteAllText("config.txt", path);
+            }
+            catch { }
+        }
+
+        private string LoadLibraryPath()
+        {
+            try
+            {
+                if (File.Exists("config.txt"))
+                {
+                    return File.ReadAllText("config.txt");
+                }
+            }
+            catch { }
+            return "";
+        }
+
 
     }
 

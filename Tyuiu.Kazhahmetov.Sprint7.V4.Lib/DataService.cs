@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
 {
     public class Book
@@ -77,6 +79,84 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             return null;
         }
 
+
+
+        public void SaveToCSV(string filePath)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
+            {
+                sw.WriteLine("Название;Автор;Год;Жанр");
+
+                foreach (var book in books)
+                {
+                    string title = book.Title.Replace("\"", "\"\"");
+                    sw.WriteLine($"\"{title}\";\"{book.Author}\";{book.Year};\"{book.Genre}\"");
+                }
+            }
+        }
+
+        public void LoadFromCSV(string filePath)
+        {
+            books.Clear();
+
+            string[] lines = File.ReadAllLines(filePath, System.Text.Encoding.UTF8);
+
+            for (int i = 1; i < lines.Length; i++)
+            {
+                try
+                {
+                    string[] parts = SplitCSVLine(lines[i]);
+
+                    if (parts.Length >= 4)
+                    {
+                        Book book = new Book(
+                            RemoveQuotes(parts[0]),
+                            RemoveQuotes(parts[1]),
+                            int.Parse(parts[2]),
+                            RemoveQuotes(parts[3]));
+
+                        books.Add(book);
+                    }
+                }
+
+                catch
+                {
+                    continue;
+                }
+            }
+        }
+
+        private string[] SplitCSVLine(string line)
+        {
+            List<string> result = new List<string>();
+            bool inQuotes = false;
+            string current = "";
+
+            foreach (char c in line)
+            {
+                if (c == '"')
+                {
+                    inQuotes = !inQuotes;
+                }
+                else if (c == ';' && !inQuotes)
+                {
+                    result.Add(current);
+                    current = "";
+                }
+                else
+                {
+                    current += c;
+                }
+            }
+
+            result.Add(current);
+            return result.ToArray();
+        }
+
+        private string RemoveQuotes(string text)
+        {
+            return text.Trim().Trim('"').Replace("\"\"", "\"");
+        }
     }
 
 

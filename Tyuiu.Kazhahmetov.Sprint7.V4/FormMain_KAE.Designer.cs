@@ -36,6 +36,7 @@
             menuStrip1 = new MenuStrip();
             сохранитьБиблиоткуToolStripMenuItem = new ToolStripMenuItem();
             fileMenuSave_KAE = new ToolStripMenuItem();
+            fileMenuLoad_KAE = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             fileMenuExit_KAE = new ToolStripMenuItem();
             книгиToolStripMenuItem = new ToolStripMenuItem();
@@ -44,6 +45,8 @@
             справкаToolStripMenuItem = new ToolStripMenuItem();
             helpMenuAbout_KAE = new ToolStripMenuItem();
             buttonDeleteBook_KAE = new Button();
+            buttonSave_KAE = new Button();
+            buttonLoad_KAE = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -79,7 +82,7 @@
             // labelBookCount_KAE
             // 
             labelBookCount_KAE.AutoSize = true;
-            labelBookCount_KAE.Location = new Point(478, 325);
+            labelBookCount_KAE.Location = new Point(21, 400);
             labelBookCount_KAE.Name = "labelBookCount_KAE";
             labelBookCount_KAE.Size = new Size(78, 15);
             labelBookCount_KAE.TabIndex = 3;
@@ -96,7 +99,7 @@
             // 
             // сохранитьБиблиоткуToolStripMenuItem
             // 
-            сохранитьБиблиоткуToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fileMenuSave_KAE, toolStripMenuItem1, fileMenuExit_KAE });
+            сохранитьБиблиоткуToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { fileMenuSave_KAE, fileMenuLoad_KAE, toolStripMenuItem1, fileMenuExit_KAE });
             сохранитьБиблиоткуToolStripMenuItem.Name = "сохранитьБиблиоткуToolStripMenuItem";
             сохранитьБиблиоткуToolStripMenuItem.Size = new Size(48, 20);
             сохранитьБиблиоткуToolStripMenuItem.Text = "&Файл";
@@ -107,6 +110,15 @@
             fileMenuSave_KAE.ShortcutKeys = Keys.Control | Keys.S;
             fileMenuSave_KAE.Size = new Size(241, 22);
             fileMenuSave_KAE.Text = "&Сохранить библиотеку";
+            fileMenuSave_KAE.Click += fileMenuSave_KAE_Click;
+            // 
+            // fileMenuLoad_KAE
+            // 
+            fileMenuLoad_KAE.Name = "fileMenuLoad_KAE";
+            fileMenuLoad_KAE.ShortcutKeys = Keys.Control | Keys.O;
+            fileMenuLoad_KAE.Size = new Size(241, 22);
+            fileMenuLoad_KAE.Text = "&Загрузить библиотеку";
+            fileMenuLoad_KAE.Click += fileMenuLoad_KAE_Click;
             // 
             // toolStripMenuItem1
             // 
@@ -160,19 +172,44 @@
             // 
             // buttonDeleteBook_KAE
             // 
-            buttonDeleteBook_KAE.Location = new Point(180, 320);
+            buttonDeleteBook_KAE.BackColor = Color.LightCoral;
+            buttonDeleteBook_KAE.Location = new Point(176, 320);
             buttonDeleteBook_KAE.Name = "buttonDeleteBook_KAE";
-            buttonDeleteBook_KAE.Size = new Size(80, 30);
+            buttonDeleteBook_KAE.Size = new Size(85, 30);
             buttonDeleteBook_KAE.TabIndex = 5;
             buttonDeleteBook_KAE.Text = "🗑️ Удалить";
-            buttonDeleteBook_KAE.UseVisualStyleBackColor = true;
+            buttonDeleteBook_KAE.UseVisualStyleBackColor = false;
             buttonDeleteBook_KAE.Click += buttonDeleteBook_KAE_Click;
+            // 
+            // buttonSave_KAE
+            // 
+            buttonSave_KAE.BackColor = Color.FromArgb(128, 255, 128);
+            buttonSave_KAE.Location = new Point(20, 361);
+            buttonSave_KAE.Name = "buttonSave_KAE";
+            buttonSave_KAE.Size = new Size(100, 30);
+            buttonSave_KAE.TabIndex = 6;
+            buttonSave_KAE.Text = "💾 Сохранить";
+            buttonSave_KAE.UseVisualStyleBackColor = false;
+            buttonSave_KAE.Click += buttonSave_KAE_Click;
+            // 
+            // buttonLoad_KAE
+            // 
+            buttonLoad_KAE.BackColor = Color.FromArgb(128, 255, 255);
+            buttonLoad_KAE.Location = new Point(126, 361);
+            buttonLoad_KAE.Name = "buttonLoad_KAE";
+            buttonLoad_KAE.Size = new Size(100, 30);
+            buttonLoad_KAE.TabIndex = 7;
+            buttonLoad_KAE.Text = "📂 Загрузить";
+            buttonLoad_KAE.UseVisualStyleBackColor = false;
+            buttonLoad_KAE.Click += buttonLoad_KAE_Click;
             // 
             // FormMain_KAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(584, 361);
+            ClientSize = new Size(584, 427);
+            Controls.Add(buttonLoad_KAE);
+            Controls.Add(buttonSave_KAE);
             Controls.Add(buttonDeleteBook_KAE);
             Controls.Add(labelBookCount_KAE);
             Controls.Add(buttonAddBook_KAE);
@@ -211,5 +248,8 @@
         private ToolStripSeparator toolStripMenuItem1;
         private ToolStripMenuItem fileMenuExit_KAE;
         private Button buttonDeleteBook_KAE;
+        private ToolStripMenuItem fileMenuLoad_KAE;
+        private Button buttonSave_KAE;
+        private Button buttonLoad_KAE;
     }
 }
