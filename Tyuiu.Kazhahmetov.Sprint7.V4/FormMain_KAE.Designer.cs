@@ -47,6 +47,7 @@
             buttonDeleteBook_KAE = new Button();
             buttonSave_KAE = new Button();
             buttonLoad_KAE = new Button();
+            comboBoxSort_KAE = new ComboBox();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -203,11 +204,22 @@
             buttonLoad_KAE.UseVisualStyleBackColor = false;
             buttonLoad_KAE.Click += buttonLoad_KAE_Click;
             // 
+            // comboBoxSort_KAE
+            // 
+            comboBoxSort_KAE.FormattingEnabled = true;
+            comboBoxSort_KAE.Items.AddRange(new object[] { "По дате добавления (новые → старые)", "По дате добавления (старые → новые)", "Название (А-Я)", "Название (Я-А)", "Автор (А-Я)", "Автор (Я-А)", "Год (старые → новые)", "Год (новые → старые)" });
+            comboBoxSort_KAE.Location = new Point(147, 31);
+            comboBoxSort_KAE.Name = "comboBoxSort_KAE";
+            comboBoxSort_KAE.Size = new Size(273, 23);
+            comboBoxSort_KAE.TabIndex = 8;
+            comboBoxSort_KAE.SelectedIndexChanged += comboBoxSort_KAE_SelectedIndexChanged;
+            // 
             // FormMain_KAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 427);
+            Controls.Add(comboBoxSort_KAE);
             Controls.Add(buttonLoad_KAE);
             Controls.Add(buttonSave_KAE);
             Controls.Add(buttonDeleteBook_KAE);
@@ -251,5 +263,6 @@
         private ToolStripMenuItem fileMenuLoad_KAE;
         private Button buttonSave_KAE;
         private Button buttonLoad_KAE;
+        private ComboBox comboBoxSort_KAE;
     }
 }

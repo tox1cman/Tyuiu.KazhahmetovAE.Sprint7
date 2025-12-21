@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
 {
     public class Book
     {
-        public string Title {  get; set; } //Название
+        public string Title { get; set; } //Название
         public string Author { get; set; } //Автор
-        public int Year {  get; set; } //Год издания
-        public string Genre {  get; set; } //Жанр книги
+        public int Year { get; set; } //Год издания
+        public string Genre { get; set; } //Жанр книги
+        public DateTime DateAdded { get; set; } // Дата добавления
 
 
 
         public Book()
         {
             Genre = "Не указан";
+            DateAdded = DateTime.Now;
         }
 
         public Book(string title, string author, int year, string genre)
@@ -24,6 +27,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             Author = author;
             Year = year;
             Genre = genre;
+            DateAdded = DateTime.Now;
         }
 
         public override string ToString()
@@ -38,11 +42,20 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
     {
         private List<Book> books = new List<Book>(); // Список книг
 
+        private List<Book> originalOrderBooks;
+
+        public LibraryService()
+        {
+            books = new List<Book>();
+            originalOrderBooks = new List<Book>();
+        }
+
 
 
         public void AddBook(Book book) // Добавить книгу
         {
             books.Add(book);
+            originalOrderBooks.Add(book);
         }
 
         public List<Book> GetAllBooks() // Получить все книги
@@ -85,12 +98,12 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         {
             using (StreamWriter sw = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
             {
-                sw.WriteLine("Название;Автор;Год;Жанр");
+                sw.WriteLine("Название;Автор;Год;Жанр;ДатаДобавления");
 
                 foreach (var book in books)
                 {
                     string title = book.Title.Replace("\"", "\"\"");
-                    sw.WriteLine($"\"{title}\";\"{book.Author}\";{book.Year};\"{book.Genre}\"");
+                    sw.WriteLine($"\"{title}\";\"{book.Author}\";{book.Year};\"{book.Genre}\";{book.DateAdded:yyyy-MM-dd HH:mm:ss}");
                 }
             }
         }
@@ -99,7 +112,11 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         {
             books.Clear();
 
+            if (!File.Exists(filePath)) return;
+
             string[] lines = File.ReadAllLines(filePath, System.Text.Encoding.UTF8);
+
+            bool hasDateColumn = lines.Length > 0 && lines[0].Contains("ДатаДобавления");
 
             for (int i = 1; i < lines.Length; i++)
             {
@@ -114,6 +131,22 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
                             RemoveQuotes(parts[1]),
                             int.Parse(parts[2]),
                             RemoveQuotes(parts[3]));
+
+                        if (hasDateColumn && parts.Length >= 5 && !string.IsNullOrEmpty(parts[4]))
+                        {
+                            try
+                            {
+                                book.DateAdded = DateTime.Parse(RemoveQuotes(parts[4]));
+                            }
+                            catch
+                            {
+                                book.DateAdded = DateTime.Now;
+                            }
+                        }
+                        else
+                        {
+                            book.DateAdded = DateTime.Now;
+                        }
 
                         books.Add(book);
                     }
@@ -157,8 +190,46 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         {
             return text.Trim().Trim('"').Replace("\"\"", "\"");
         }
+
+
+
+
+        public void SortBooksByTitle(bool ascending = true)
+        {
+            if (ascending)
+                books = books.OrderBy(b => b.Title).ToList();
+            else
+                books = books.OrderByDescending(b => b.Title).ToList();
+        }
+
+        public void SortBooksByAuthor(bool ascending = true)
+        {
+            if (ascending)
+                books = books.OrderBy(b => b.Author).ToList();
+            else
+                books = books.OrderByDescending(b => b.Author).ToList();
+        }
+
+        public void SortBooksByYear(bool ascending = true)
+        {
+            if (ascending)
+                books = books.OrderBy(b => b.Year).ToList();
+            else
+                books = books.OrderByDescending(b => b.Year).ToList();
+        }
+        public void SortBooksByDateAdded(bool ascending = true)
+        {
+            if (ascending)
+                books = books.OrderBy(b => b.DateAdded).ToList(); 
+            else
+                books = books.OrderByDescending(b => b.DateAdded).ToList(); 
+        }
+
+
+
     }
 
 
-    
+
+
 }

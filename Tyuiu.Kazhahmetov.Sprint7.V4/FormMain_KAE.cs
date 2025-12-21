@@ -1,4 +1,5 @@
-using System;
+п»їusing System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.SymbolStore;
 using System.Windows.Forms;
 using Tyuiu.Kazhahmetov.Sprint7.V4.Lib;
@@ -29,11 +30,11 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 }
                 catch
                 {
-                    
+
                 }
             }
 
-  
+
             if (!loaded)
             {
                 libraryService.AddTestBooks();
@@ -45,24 +46,20 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
             this.KeyPreview = true;
             this.KeyDown += FormMain_KeyDown;
+
         }
 
         private void ShowBooks()
         {
-            listBoxBooks_KAE.Items.Clear();
+            ShowSortedBooks(libraryService.GetAllBooks());
 
-            var books = libraryService.GetAllBooks();
 
-            foreach (var book in books)
-            {
-                listBoxBooks_KAE.Items.Add(book.ToString());
-            }
         }
 
         private void UpdateBookCount()
         {
             int count = libraryService.GetBookCount();
-            labelBookCount_KAE.Text = $"Всего книг: {count}";
+            labelBookCount_KAE.Text = $"Р’СЃРµРіРѕ РєРЅРёРі: {count}";
         }
 
 
@@ -81,8 +78,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 {
                     libraryService.AddBook(inputForm.NewBook);
 
-                    ShowBooks();
-                    UpdateBookCount();
+                    comboBoxSort_KAE_SelectedIndexChanged(null, null);
                 }
             }
         }
@@ -92,12 +88,12 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         }
 
 
-        private void загрузитьБиблиотекуCtrlOToolStripMenuItem_Click(object sender, EventArgs e)
+        private void Р·Р°РіСЂСѓР·РёС‚СЊР‘РёР±Р»РёРѕС‚РµРєСѓCtrlOToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void книгиToolStripMenuItem_Click(object sender, EventArgs e)
+        private void РєРЅРёРіРёToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -105,8 +101,8 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         private void fileMenuExit_KAE_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
-                "Вы уверены, что хотите выйти?",
-                  "Подтверждение выхода",
+                "Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?",
+                  "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РІС‹С…РѕРґР°",
                   MessageBoxButtons.YesNo,
                   MessageBoxIcon.Question);
 
@@ -122,8 +118,8 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         {
             if (listBoxBooks_KAE.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите книгу для удаления!",
-                       "Ошибка",
+                MessageBox.Show("Р’С‹Р±РµСЂРёС‚Рµ РєРЅРёРіСѓ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ!",
+                       "РћС€РёР±РєР°",
                        MessageBoxButtons.OK,
                        MessageBoxIcon.Warning);
                 return;
@@ -135,13 +131,13 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
             if (bookToDelete == null)
             {
-                MessageBox.Show("Ошибка: книга не найдена!", "Ошибка");
+                MessageBox.Show("РћС€РёР±РєР°: РєРЅРёРіР° РЅРµ РЅР°Р№РґРµРЅР°!", "РћС€РёР±РєР°");
                 return;
             }
 
             DialogResult result = MessageBox.Show(
-                $"Удалить книгу: \n\"{bookToDelete.Title}\" ({bookToDelete.Author})?",
-                "Подтверждение удаления",
+                $"РЈРґР°Р»РёС‚СЊ РєРЅРёРіСѓ: \n\"{bookToDelete.Title}\" ({bookToDelete.Author})?",
+                "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓРґР°Р»РµРЅРёСЏ",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -152,8 +148,13 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 ShowBooks();
                 UpdateBookCount();
 
-                MessageBox.Show("Книга удалена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("РљРЅРёРіР° СѓРґР°Р»РµРЅР°!", "РЈСЃРїРµС…", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                comboBoxSort_KAE_SelectedIndexChanged(null, null);
+
+
             }
+
+            comboBoxSort_KAE_SelectedIndexChanged(null, null);
         }
         private void buttonDeleteBook_KAE_Click(object sender, EventArgs e)
         {
@@ -195,8 +196,8 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         private void fileMenuSave_KAE_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.Filter = "CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*";
-            saveDialog.Title = "Сохранить библиотеку";
+            saveDialog.Filter = "CSV С„Р°Р№Р»С‹ (*.csv)|*.csv|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*";
+            saveDialog.Title = "РЎРѕС…СЂР°РЅРёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ";
             saveDialog.DefaultExt = "csv";
 
             if (saveDialog.ShowDialog() == DialogResult.OK)
@@ -204,12 +205,12 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 try
                 {
                     libraryService.SaveToCSV(saveDialog.FileName);
-                    SaveLibraryPath(saveDialog.FileName); 
-                    MessageBox.Show($"Библиотека сохранена!", "Успех");
+                    SaveLibraryPath(saveDialog.FileName);
+                    MessageBox.Show($"Р‘РёР±Р»РёРѕС‚РµРєР° СЃРѕС…СЂР°РЅРµРЅР°!", "РЈСЃРїРµС…");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка");
+                    MessageBox.Show($"РћС€РёР±РєР°: {ex.Message}", "РћС€РёР±РєР°");
                 }
             }
 
@@ -221,8 +222,8 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             if (libraryService.GetBookCount() > 0)
             {
                 DialogResult result = MessageBox.Show(
-                    "Текущие книги будут удалены. Продолжить?",
-                    "Подтверждение",
+                    "РўРµРєСѓС‰РёРµ РєРЅРёРіРё Р±СѓРґСѓС‚ СѓРґР°Р»РµРЅС‹. РџСЂРѕРґРѕР»Р¶РёС‚СЊ?",
+                    "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
 
@@ -233,8 +234,8 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             }
 
             OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.Filter = "CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*";
-            openDialog.Title = "Загрузить библиотеку";
+            openDialog.Filter = "CSV С„Р°Р№Р»С‹ (*.csv)|*.csv|Р’СЃРµ С„Р°Р№Р»С‹ (*.*)|*.*";
+            openDialog.Title = "Р—Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ";
 
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
@@ -246,11 +247,11 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                     ShowBooks();
                     UpdateBookCount();
 
-                    MessageBox.Show($"Библиотека загружена!", "Успех");
+                    MessageBox.Show($"Р‘РёР±Р»РёРѕС‚РµРєР° Р·Р°РіСЂСѓР¶РµРЅР°!", "РЈСЃРїРµС…");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка");
+                    MessageBox.Show($"РћС€РёР±РєР°: {ex.Message}", "РћС€РёР±РєР°");
                 }
             }
         }
@@ -287,7 +288,67 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             return "";
         }
 
+        private void comboBoxSort_KAE_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxSort_KAE.SelectedIndex == -1)
+            {
+                return;
+            }
 
+            switch (comboBoxSort_KAE.SelectedIndex)
+            {
+                case 1: // РџРѕ РґР°С‚Рµ РґРѕР±Р°РІР»РµРЅРёСЏ (СЃС‚Р°СЂС‹Рµ в†’ РЅРѕРІС‹Рµ)
+                    libraryService.SortBooksByDateAdded(true);
+                    break;
+
+                case 0: // РџРѕ РґР°С‚Рµ РґРѕР±Р°РІР»РµРЅРёСЏ (РЅРѕРІС‹Рµ в†’ СЃС‚Р°СЂС‹Рµ)
+                    libraryService.SortBooksByDateAdded(false);
+                    break;
+
+                case 2: // РџРѕ РЅР°Р·РІР°РЅРёСЋ (Рђ-РЇ)
+                    libraryService.SortBooksByTitle(true);
+                    break;
+
+                case 3: // РџРѕ РЅР°Р·РІР°РЅРёСЋ (РЇ-Рђ)
+                    libraryService.SortBooksByTitle(false);
+                    break;
+
+                case 4: // РџРѕ Р°РІС‚РѕСЂСѓ (Рђ-РЇ)
+                    libraryService.SortBooksByAuthor(true);
+                    break;
+
+                case 5: // РџРѕ Р°РІС‚РѕСЂСѓ (РЇ-Рђ)
+                    libraryService.SortBooksByAuthor(false);
+                    break;
+
+                case 6: // РџРѕ РіРѕРґСѓ (СЃС‚Р°СЂС‹Рµ в†’ РЅРѕРІС‹Рµ)
+                    libraryService.SortBooksByYear(true);
+                    break;
+
+                case 7: // РџРѕ РіРѕРґСѓ (РЅРѕРІС‹Рµ в†’ СЃС‚Р°СЂС‹Рµ)
+                    libraryService.SortBooksByYear(false);
+                    break;
+            }
+
+            ShowSortedBooks(libraryService.GetAllBooks());
+
+        }
+        private void ShowSortedBooks(List<Book> booksToShow)
+        {
+            listBoxBooks_KAE.Items.Clear();
+
+            foreach (var book in booksToShow)
+            {
+                listBoxBooks_KAE.Items.Add(book.ToString());
+            }
+
+            UpdateBookCount();
+        }
+
+        private void radioButtonDesc_KAE_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
