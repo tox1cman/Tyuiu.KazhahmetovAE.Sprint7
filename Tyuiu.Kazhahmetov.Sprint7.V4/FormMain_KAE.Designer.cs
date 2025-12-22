@@ -48,6 +48,7 @@
             buttonSave_KAE = new Button();
             buttonLoad_KAE = new Button();
             comboBoxSort_KAE = new ComboBox();
+            buttonEditBook_KAE = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -69,6 +70,7 @@
             listBoxBooks_KAE.Name = "listBoxBooks_KAE";
             listBoxBooks_KAE.Size = new Size(400, 244);
             listBoxBooks_KAE.TabIndex = 1;
+            listBoxBooks_KAE.DoubleClick += listBoxBooks_KAE_DoubleClick;
             // 
             // buttonAddBook_KAE
             // 
@@ -174,9 +176,9 @@
             // buttonDeleteBook_KAE
             // 
             buttonDeleteBook_KAE.BackColor = Color.LightCoral;
-            buttonDeleteBook_KAE.Location = new Point(176, 320);
+            buttonDeleteBook_KAE.Location = new Point(332, 320);
             buttonDeleteBook_KAE.Name = "buttonDeleteBook_KAE";
-            buttonDeleteBook_KAE.Size = new Size(85, 30);
+            buttonDeleteBook_KAE.Size = new Size(88, 30);
             buttonDeleteBook_KAE.TabIndex = 5;
             buttonDeleteBook_KAE.Text = "🗑️ Удалить";
             buttonDeleteBook_KAE.UseVisualStyleBackColor = false;
@@ -206,6 +208,7 @@
             // 
             // comboBoxSort_KAE
             // 
+            comboBoxSort_KAE.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxSort_KAE.FormattingEnabled = true;
             comboBoxSort_KAE.Items.AddRange(new object[] { "По дате добавления (новые → старые)", "По дате добавления (старые → новые)", "Название (А-Я)", "Название (Я-А)", "Автор (А-Я)", "Автор (Я-А)", "Год (старые → новые)", "Год (новые → старые)" });
             comboBoxSort_KAE.Location = new Point(147, 31);
@@ -214,11 +217,22 @@
             comboBoxSort_KAE.TabIndex = 8;
             comboBoxSort_KAE.SelectedIndexChanged += comboBoxSort_KAE_SelectedIndexChanged;
             // 
+            // buttonEditBook_KAE
+            // 
+            buttonEditBook_KAE.Location = new Point(176, 320);
+            buttonEditBook_KAE.Name = "buttonEditBook_KAE";
+            buttonEditBook_KAE.Size = new Size(150, 30);
+            buttonEditBook_KAE.TabIndex = 9;
+            buttonEditBook_KAE.Text = "✏️ Редактировать";
+            buttonEditBook_KAE.UseVisualStyleBackColor = true;
+            buttonEditBook_KAE.Click += buttonEditBook_KAE_Click;
+            // 
             // FormMain_KAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 427);
+            Controls.Add(buttonEditBook_KAE);
             Controls.Add(comboBoxSort_KAE);
             Controls.Add(buttonLoad_KAE);
             Controls.Add(buttonSave_KAE);
@@ -264,5 +278,6 @@
         private Button buttonSave_KAE;
         private Button buttonLoad_KAE;
         private ComboBox comboBoxSort_KAE;
+        private Button buttonEditBook_KAE;
     }
 }

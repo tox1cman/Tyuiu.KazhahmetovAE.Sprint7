@@ -191,6 +191,11 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 fileMenuLoad_KAE_Click(sender, e);
                 e.Handled = true;
             }
+            else if (e.KeyCode == Keys.E && e.Control)
+            {
+                EditSelectedBook();
+                e.Handled = true;
+            }
         }
 
         private void fileMenuSave_KAE_Click(object sender, EventArgs e)
@@ -348,6 +353,73 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         private void radioButtonDesc_KAE_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+
+        private void EditSelectedBook()
+        {
+            if (listBoxBooks_KAE.SelectedIndex == -1)
+            {
+                MessageBox.Show("Выберите книгу для редактирования!",
+                                 "Редактирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+
+            string selectedBookText = listBoxBooks_KAE.SelectedItem.ToString();
+            var allBooks = libraryService.GetAllBooks();
+            Book bookToEdit = allBooks.FirstOrDefault(b => b.ToString() == selectedBookText);
+
+            if (bookToEdit == null)
+            {
+                MessageBox.Show("Ошибка: книга не найдена!", "Ошибка",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            using (var editForm = new FormEditBook_KAE(bookToEdit))
+            {
+                if (editForm.ShowDialog() == DialogResult.OK)
+                {
+                    bool succes = libraryService.UpdateBook(bookToEdit, editForm.EditedBook);
+
+                    if (succes)
+                    {
+                        RefreshBookList();
+                        MessageBox.Show("Книга успешно обновлена!", "Успех",
+                           MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Не удалось обновить книгу!", "Ошибка",
+                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+
+        }
+
+        private void RefreshBookList()
+        {
+            if (comboBoxSort_KAE.SelectedIndex != -1)
+            {
+                comboBoxSort_KAE_SelectedIndexChanged(null, null);
+            }
+            else
+            {
+                ShowSortedBooks(libraryService.GetAllBooks());
+            }
+        }
+
+        private void buttonEditBook_KAE_Click(object sender, EventArgs e)
+        {
+            EditSelectedBook();
+        }
+
+        private void listBoxBooks_KAE_DoubleClick(object sender, EventArgs e)
+        {
+            EditSelectedBook();
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
 {
     public class Book
@@ -12,6 +13,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         public int Year { get; set; } //Год издания
         public string Genre { get; set; } //Жанр книги
         public DateTime DateAdded { get; set; } // Дата добавления
+        public string Notes { get; set; } // Заметки
 
 
 
@@ -19,6 +21,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         {
             Genre = "Не указан";
             DateAdded = DateTime.Now;
+            Notes = "";
         }
 
         public Book(string title, string author, int year, string genre)
@@ -28,6 +31,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             Year = year;
             Genre = genre;
             DateAdded = DateTime.Now;
+            Notes = "";
         }
 
         public override string ToString()
@@ -98,12 +102,15 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         {
             using (StreamWriter sw = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
             {
-                sw.WriteLine("Название;Автор;Год;Жанр;ДатаДобавления");
+                sw.WriteLine("Название;Автор;Год;Жанр;ДатаДобавления;Заметки");
 
                 foreach (var book in books)
                 {
                     string title = book.Title.Replace("\"", "\"\"");
-                    sw.WriteLine($"\"{title}\";\"{book.Author}\";{book.Year};\"{book.Genre}\";{book.DateAdded:yyyy-MM-dd HH:mm:ss}");
+                    string author = book.Notes.Replace("\"", "\"\"");
+                    string genre = book.Notes.Replace("\"", "\"\"");
+                    string notes = book.Notes.Replace("\"", "\"\"");
+                    sw.WriteLine($"\"{title}\";\"{book.Author}\";{book.Year};\"{book.Genre}\";{book.DateAdded:yyyy-MM-dd HH:mm:ss};\"{notes}\"");
                 }
             }
         }
@@ -117,6 +124,8 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             string[] lines = File.ReadAllLines(filePath, System.Text.Encoding.UTF8);
 
             bool hasDateColumn = lines.Length > 0 && lines[0].Contains("ДатаДобавления");
+            bool hasNotesColumn = lines.Length > 0 && lines[0].Contains("Заметки");
+
 
             for (int i = 1; i < lines.Length; i++)
             {
@@ -131,21 +140,22 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
                             RemoveQuotes(parts[1]),
                             int.Parse(parts[2]),
                             RemoveQuotes(parts[3]));
-
+                        
+                        //Загружаем дату если есть
                         if (hasDateColumn && parts.Length >= 5 && !string.IsNullOrEmpty(parts[4]))
                         {
-                            try
-                            {
-                                book.DateAdded = DateTime.Parse(RemoveQuotes(parts[4]));
-                            }
-                            catch
-                            {
-                                book.DateAdded = DateTime.Now;
-                            }
+                            try { book.DateAdded = DateTime.Parse(RemoveQuotes(parts[4])); }
+                            catch { book.DateAdded = DateTime.Now; }
                         }
                         else
                         {
                             book.DateAdded = DateTime.Now;
+                        }
+
+                        //Загружаем заметки если есть
+                        if (hasNotesColumn && parts.Length >= 6)
+                        {
+                            book.Notes = RemoveQuotes(parts[5]);
                         }
 
                         books.Add(book);
@@ -226,7 +236,20 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         }
 
 
+        public bool UpdateBook(Book oldBook, Book updateBook)
+        {
+            int index = books.IndexOf(oldBook);
+            if (index >= 0)
+            {
+                updateBook.DateAdded = oldBook.DateAdded;
 
+                books[index] = updateBook;
+
+                return true;
+            }
+
+            return false;
+        }
     }
 
 
