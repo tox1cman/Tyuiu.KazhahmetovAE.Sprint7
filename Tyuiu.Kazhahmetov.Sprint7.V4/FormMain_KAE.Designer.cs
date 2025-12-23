@@ -29,11 +29,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             labelTitleBooks_KAE = new Label();
             listBoxBooks_KAE = new ListBox();
             buttonAddBook_KAE = new Button();
             labelBookCount_KAE = new Label();
-            menuStrip1 = new MenuStrip();
+            menuStripKAE = new MenuStrip();
             сохранитьБиблиоткуToolStripMenuItem = new ToolStripMenuItem();
             fileMenuSave_KAE = new ToolStripMenuItem();
             fileMenuLoad_KAE = new ToolStripMenuItem();
@@ -41,15 +42,19 @@
             fileMenuExit_KAE = new ToolStripMenuItem();
             книгиToolStripMenuItem = new ToolStripMenuItem();
             booksMenuAdd_KAE = new ToolStripMenuItem();
+            редактироватьКнигуToolStripMenuItem = new ToolStripMenuItem();
             booksMenuDelete_KAE = new ToolStripMenuItem();
             справкаToolStripMenuItem = new ToolStripMenuItem();
+            инструкцияToolStripMenuItem = new ToolStripMenuItem();
             helpMenuAbout_KAE = new ToolStripMenuItem();
             buttonDeleteBook_KAE = new Button();
             buttonSave_KAE = new Button();
             buttonLoad_KAE = new Button();
             comboBoxSort_KAE = new ComboBox();
             buttonEditBook_KAE = new Button();
-            menuStrip1.SuspendLayout();
+            textBoxSearch_KAE = new TextBox();
+            toolTip_KAE = new ToolTip(components);
+            menuStripKAE.SuspendLayout();
             SuspendLayout();
             // 
             // labelTitleBooks_KAE
@@ -70,6 +75,7 @@
             listBoxBooks_KAE.Name = "listBoxBooks_KAE";
             listBoxBooks_KAE.Size = new Size(400, 244);
             listBoxBooks_KAE.TabIndex = 1;
+            toolTip_KAE.SetToolTip(listBoxBooks_KAE, "Список книг. Выберите книгу для действий. Двойной клик - редактирование.");
             listBoxBooks_KAE.DoubleClick += listBoxBooks_KAE_DoubleClick;
             // 
             // buttonAddBook_KAE
@@ -79,6 +85,7 @@
             buttonAddBook_KAE.Size = new Size(150, 30);
             buttonAddBook_KAE.TabIndex = 2;
             buttonAddBook_KAE.Text = "➕ Добавить книгу";
+            toolTip_KAE.SetToolTip(buttonAddBook_KAE, "Добавить новую книгу (Ctrl+N)");
             buttonAddBook_KAE.UseVisualStyleBackColor = true;
             buttonAddBook_KAE.Click += buttonAddBook_KAE_Click;
             // 
@@ -90,15 +97,16 @@
             labelBookCount_KAE.Size = new Size(78, 15);
             labelBookCount_KAE.TabIndex = 3;
             labelBookCount_KAE.Text = "Всего книг: 0";
+            toolTip_KAE.SetToolTip(labelBookCount_KAE, "Общее количество книг в библиотеке");
             // 
-            // menuStrip1
+            // menuStripKAE
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { сохранитьБиблиоткуToolStripMenuItem, книгиToolStripMenuItem, справкаToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(584, 24);
-            menuStrip1.TabIndex = 4;
-            menuStrip1.Text = "menuStrip1";
+            menuStripKAE.Items.AddRange(new ToolStripItem[] { сохранитьБиблиоткуToolStripMenuItem, книгиToolStripMenuItem, справкаToolStripMenuItem });
+            menuStripKAE.Location = new Point(0, 0);
+            menuStripKAE.Name = "menuStripKAE";
+            menuStripKAE.Size = new Size(584, 24);
+            menuStripKAE.TabIndex = 4;
+            menuStripKAE.Text = "menuStrip1";
             // 
             // сохранитьБиблиоткуToolStripMenuItem
             // 
@@ -138,7 +146,7 @@
             // 
             // книгиToolStripMenuItem
             // 
-            книгиToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { booksMenuAdd_KAE, booksMenuDelete_KAE });
+            книгиToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { booksMenuAdd_KAE, редактироватьКнигуToolStripMenuItem, booksMenuDelete_KAE });
             книгиToolStripMenuItem.Name = "книгиToolStripMenuItem";
             книгиToolStripMenuItem.Size = new Size(52, 20);
             книгиToolStripMenuItem.Text = "&Книги";
@@ -148,30 +156,46 @@
             // 
             booksMenuAdd_KAE.Name = "booksMenuAdd_KAE";
             booksMenuAdd_KAE.ShortcutKeys = Keys.Control | Keys.N;
-            booksMenuAdd_KAE.Size = new Size(203, 22);
+            booksMenuAdd_KAE.Size = new Size(228, 22);
             booksMenuAdd_KAE.Text = "&Добавить книгу";
             booksMenuAdd_KAE.Click += booksMenuAdd_KAE_Click;
+            // 
+            // редактироватьКнигуToolStripMenuItem
+            // 
+            редактироватьКнигуToolStripMenuItem.Name = "редактироватьКнигуToolStripMenuItem";
+            редактироватьКнигуToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.E;
+            редактироватьКнигуToolStripMenuItem.Size = new Size(228, 22);
+            редактироватьКнигуToolStripMenuItem.Text = "&Редактировать книгу";
+            редактироватьКнигуToolStripMenuItem.Click += редактироватьКнигуToolStripMenuItem_Click;
             // 
             // booksMenuDelete_KAE
             // 
             booksMenuDelete_KAE.Name = "booksMenuDelete_KAE";
             booksMenuDelete_KAE.ShortcutKeys = Keys.Delete;
-            booksMenuDelete_KAE.Size = new Size(203, 22);
+            booksMenuDelete_KAE.Size = new Size(228, 22);
             booksMenuDelete_KAE.Text = "&Удалить книгу";
             booksMenuDelete_KAE.Click += booksMenuDelete_KAE_Click;
             // 
             // справкаToolStripMenuItem
             // 
-            справкаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { helpMenuAbout_KAE });
+            справкаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { инструкцияToolStripMenuItem, helpMenuAbout_KAE });
             справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
             справкаToolStripMenuItem.Size = new Size(65, 20);
             справкаToolStripMenuItem.Text = "&Справка";
+            // 
+            // инструкцияToolStripMenuItem
+            // 
+            инструкцияToolStripMenuItem.Name = "инструкцияToolStripMenuItem";
+            инструкцияToolStripMenuItem.Size = new Size(149, 22);
+            инструкцияToolStripMenuItem.Text = "&Инструкция";
+            инструкцияToolStripMenuItem.Click += инструкцияToolStripMenuItem_Click;
             // 
             // helpMenuAbout_KAE
             // 
             helpMenuAbout_KAE.Name = "helpMenuAbout_KAE";
             helpMenuAbout_KAE.Size = new Size(149, 22);
             helpMenuAbout_KAE.Text = "&О программе";
+            helpMenuAbout_KAE.Click += helpMenuAbout_KAE_Click;
             // 
             // buttonDeleteBook_KAE
             // 
@@ -181,6 +205,7 @@
             buttonDeleteBook_KAE.Size = new Size(88, 30);
             buttonDeleteBook_KAE.TabIndex = 5;
             buttonDeleteBook_KAE.Text = "🗑️ Удалить";
+            toolTip_KAE.SetToolTip(buttonDeleteBook_KAE, "Удалить выбранную книгу (Delete)");
             buttonDeleteBook_KAE.UseVisualStyleBackColor = false;
             buttonDeleteBook_KAE.Click += buttonDeleteBook_KAE_Click;
             // 
@@ -192,6 +217,7 @@
             buttonSave_KAE.Size = new Size(100, 30);
             buttonSave_KAE.TabIndex = 6;
             buttonSave_KAE.Text = "💾 Сохранить";
+            toolTip_KAE.SetToolTip(buttonSave_KAE, "Сохранить библиотеку в файл (Ctrl+S)");
             buttonSave_KAE.UseVisualStyleBackColor = false;
             buttonSave_KAE.Click += buttonSave_KAE_Click;
             // 
@@ -203,6 +229,7 @@
             buttonLoad_KAE.Size = new Size(100, 30);
             buttonLoad_KAE.TabIndex = 7;
             buttonLoad_KAE.Text = "📂 Загрузить";
+            toolTip_KAE.SetToolTip(buttonLoad_KAE, "Загрузить библиотеку из файла (Ctrl+O)");
             buttonLoad_KAE.UseVisualStyleBackColor = false;
             buttonLoad_KAE.Click += buttonLoad_KAE_Click;
             // 
@@ -215,6 +242,7 @@
             comboBoxSort_KAE.Name = "comboBoxSort_KAE";
             comboBoxSort_KAE.Size = new Size(273, 23);
             comboBoxSort_KAE.TabIndex = 8;
+            toolTip_KAE.SetToolTip(comboBoxSort_KAE, "Выберите тип сортировки книг");
             comboBoxSort_KAE.SelectedIndexChanged += comboBoxSort_KAE_SelectedIndexChanged;
             // 
             // buttonEditBook_KAE
@@ -224,14 +252,26 @@
             buttonEditBook_KAE.Size = new Size(150, 30);
             buttonEditBook_KAE.TabIndex = 9;
             buttonEditBook_KAE.Text = "✏️ Редактировать";
+            toolTip_KAE.SetToolTip(buttonEditBook_KAE, "Редактировать выбранную книгу (Ctrl+E)");
             buttonEditBook_KAE.UseVisualStyleBackColor = true;
             buttonEditBook_KAE.Click += buttonEditBook_KAE_Click;
+            // 
+            // textBoxSearch_KAE
+            // 
+            textBoxSearch_KAE.Location = new Point(426, 31);
+            textBoxSearch_KAE.Name = "textBoxSearch_KAE";
+            textBoxSearch_KAE.PlaceholderText = "Поиск...";
+            textBoxSearch_KAE.Size = new Size(146, 23);
+            textBoxSearch_KAE.TabIndex = 10;
+            toolTip_KAE.SetToolTip(textBoxSearch_KAE, "Введите название или автора для поиска. Поиск работает автоматически.");
+            textBoxSearch_KAE.TextChanged += textBoxSearch_KAE_TextChanged;
             // 
             // FormMain_KAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 427);
+            Controls.Add(textBoxSearch_KAE);
             Controls.Add(buttonEditBook_KAE);
             Controls.Add(comboBoxSort_KAE);
             Controls.Add(buttonLoad_KAE);
@@ -241,17 +281,17 @@
             Controls.Add(buttonAddBook_KAE);
             Controls.Add(listBoxBooks_KAE);
             Controls.Add(labelTitleBooks_KAE);
-            Controls.Add(menuStrip1);
+            Controls.Add(menuStripKAE);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            MainMenuStrip = menuStrip1;
+            MainMenuStrip = menuStripKAE;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormMain_KAE";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Моя библиотека - Кажахметов А.Е.";
             Load += FormMain_Load;
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStripKAE.ResumeLayout(false);
+            menuStripKAE.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -262,7 +302,7 @@
         private ListBox listBoxBooks_KAE;
         private Button buttonAddBook_KAE;
         private Label labelBookCount_KAE;
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStripKAE;
         private ToolStripMenuItem сохранитьБиблиоткуToolStripMenuItem;
         private ToolStripMenuItem загрузитьБиблиотекуCtrlOToolStripMenuItem;
         private ToolStripMenuItem fileMenuSave_KAE;
@@ -279,5 +319,9 @@
         private Button buttonLoad_KAE;
         private ComboBox comboBoxSort_KAE;
         private Button buttonEditBook_KAE;
+        private ToolStripMenuItem редактироватьКнигуToolStripMenuItem;
+        private TextBox textBoxSearch_KAE;
+        private ToolStripMenuItem инструкцияToolStripMenuItem;
+        private ToolTip toolTip_KAE;
     }
 }

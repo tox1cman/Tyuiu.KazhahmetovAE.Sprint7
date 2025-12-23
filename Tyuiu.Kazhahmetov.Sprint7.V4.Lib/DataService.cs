@@ -87,6 +87,12 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             }
         }
 
+        public bool RemoveBook(Book book)
+        {
+            bool removedFromBooks = books.Remove(book);
+            return removedFromBooks;
+        }
+
         public Book GetBookAt(int index)
         {
             if (index >= 0 && index <= books.Count)

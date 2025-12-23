@@ -101,7 +101,7 @@
             // numericYear_KAE
             // 
             numericYear_KAE.Location = new Point(100, 97);
-            numericYear_KAE.Maximum = new decimal(new int[] { 2025, 0, 0, 0 });
+            numericYear_KAE.Maximum = new decimal(new int[] { 2100, 0, 0, 0 });
             numericYear_KAE.Minimum = new decimal(new int[] { 1000, 0, 0, 0 });
             numericYear_KAE.Name = "numericYear_KAE";
             numericYear_KAE.Size = new Size(100, 23);

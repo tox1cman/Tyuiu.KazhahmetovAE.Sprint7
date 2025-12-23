@@ -46,7 +46,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
             this.KeyPreview = true;
             this.KeyDown += FormMain_KeyDown;
-
+            textBoxSearch_KAE.TextChanged += textBoxSearch_KAE_TextChanged;
         }
 
         private void ShowBooks()
@@ -125,9 +125,10 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 return;
             }
 
-            int selectedIndex = listBoxBooks_KAE.SelectedIndex;
+            string selectedBookText = listBoxBooks_KAE.SelectedItem.ToString();
 
-            Book bookToDelete = libraryService.GetBookAt(selectedIndex);
+            var currentBooks = GetCurrentDisplayedBooks();
+            Book bookToDelete = currentBooks.FirstOrDefault(b => b.ToString() == selectedBookText);
 
             if (bookToDelete == null)
             {
@@ -143,19 +144,23 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
             if (result == DialogResult.Yes)
             {
-                libraryService.RemoveBookAt(selectedIndex);
+                bool removed = libraryService.RemoveBook(bookToDelete);
 
-                ShowBooks();
-                UpdateBookCount();
-
-                MessageBox.Show("Книга удалена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                comboBoxSort_KAE_SelectedIndexChanged(null, null);
-
-
+                if (removed)
+                {
+                    ShowBooksWithSearch();
+                    UpdateBookCount();
+                    MessageBox.Show("Книга удалена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось удалить книгу!", "Ошибка",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
-            comboBoxSort_KAE_SelectedIndexChanged(null, null);
         }
+
         private void buttonDeleteBook_KAE_Click(object sender, EventArgs e)
         {
             DeleteSelectedBook();
@@ -335,7 +340,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                     break;
             }
 
-            ShowSortedBooks(libraryService.GetAllBooks());
+            ShowBooksWithSearch();
 
         }
         private void ShowSortedBooks(List<Book> booksToShow)
@@ -420,6 +425,72 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         private void listBoxBooks_KAE_DoubleClick(object sender, EventArgs e)
         {
             EditSelectedBook();
+        }
+
+        private void редактироватьКнигуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditSelectedBook();
+        }
+
+
+        private void ShowBooksWithSearch()
+        {
+            string searchText = textBoxSearch_KAE.Text.Trim().ToLower();
+            var allBooks = libraryService.GetAllBooks();
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                allBooks = allBooks.Where(b =>
+                                  b.Title.ToLower().Contains(searchText) ||
+                                  b.Author.ToLower().Contains(searchText)).ToList();
+            }
+
+            ShowBooksInListBox(allBooks);
+        }
+
+        private void ShowBooksInListBox(List<Book> books)
+        {
+            listBoxBooks_KAE.Items.Clear();
+
+            foreach (var book in books)
+            {
+                listBoxBooks_KAE.Items.Add(book.ToString());
+            }
+
+        }
+
+        private void textBoxSearch_KAE_TextChanged(object sender, EventArgs e)
+        {
+            ShowBooksWithSearch();
+
+        }
+
+
+        private List<Book> GetCurrentDisplayedBooks()
+        {
+            string searchText = textBoxSearch_KAE.Text.Trim().ToLower();
+            var allBooks = libraryService.GetAllBooks();
+
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                allBooks = allBooks.Where(b =>
+                                  b.Title.ToLower().Contains(searchText) ||
+                                  b.Author.ToLower().Contains(searchText)).ToList();
+            }
+
+            return allBooks;
+        }
+
+        private void helpMenuAbout_KAE_Click(object sender, EventArgs e)
+        {
+            FormAbout_KAE fm = new FormAbout_KAE();
+            fm.ShowDialog();
+        }
+
+        private void инструкцияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormInfo_KAE fi = new FormInfo_KAE();
+            fi.ShowDialog();
         }
     }
 

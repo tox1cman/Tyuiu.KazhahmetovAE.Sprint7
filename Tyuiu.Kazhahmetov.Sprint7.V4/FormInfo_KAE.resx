@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip_KAE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>132, 17</value>
-  </metadata>
-  <metadata name="menuStripKAE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="label2.Text" xml:space="preserve">
+    <value>- ДОБАВЛЕНИЕ КНИГИ:
+Нажмите "Добавить книгу" или Ctrl+N. Заполните название и автора. 
+
+- РЕДАКТИРОВАНИЕ:
+Выберите книгу → "Редактировать" или Ctrl+E. Или двойной клик по книге.
+
+- УДАЛЕНИЕ:
+Выберите книгу → "Удалить" или клавиша Delete.
+
+- ПОИСК:
+Введите текст в поле поиска. Список фильтруется автоматически.
+
+- СОРТИРОВКА:
+Выберите тип сортировки в выпадающем списке.
+
+- СОХРАНЕНИЕ ДАННЫХ:
+Ctrl+S - сохранить библиотеку в файл
+Ctrl+O - загрузить библиотеку из файла
+
+- ГОРЯЧИЕ КЛАВИШИ:
+Ctrl+N - добавить, Ctrl+E - редактировать, Delete - удалить
+Ctrl+S - сохранить, Ctrl+O - загрузить, Escape - отмена</value>
+  </data>
 </root>
