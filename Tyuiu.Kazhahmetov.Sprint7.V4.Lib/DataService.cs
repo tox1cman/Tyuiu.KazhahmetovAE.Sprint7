@@ -17,14 +17,14 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
 
 
 
-        public Book()
+        public Book() // Конструктор по умолчанию
         {
             Genre = "Не указан";
             DateAdded = DateTime.Now;
             Notes = "";
         }
 
-        public Book(string title, string author, int year, string genre)
+        public Book(string title, string author, int year, string genre) // Основной конструктор
         {
             Title = title;
             Author = author;
@@ -34,7 +34,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             Notes = "";
         }
 
-        public override string ToString()
+        public override string ToString() // Строковое представление книги
         {
             return $"{Title} ({Author}, {Year})";
         }
@@ -46,12 +46,10 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
     {
         private List<Book> books = new List<Book>(); // Список книг
 
-        private List<Book> originalOrderBooks;
 
-        public LibraryService()
+        public LibraryService() // Инициализация библиотеки
         {
             books = new List<Book>();
-            originalOrderBooks = new List<Book>();
         }
 
 
@@ -59,7 +57,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         public void AddBook(Book book) // Добавить книгу
         {
             books.Add(book);
-            originalOrderBooks.Add(book);
+
         }
 
         public List<Book> GetAllBooks() // Получить все книги
@@ -72,14 +70,14 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             return books.Count;
         }
 
-        public void AddTestBooks()
+        public void AddTestBooks() // Тестовые книги
         {
             books.Add(new Book("Война и мир", "Толстой Л.Н. ", 1869, "Роман"));
             books.Add(new Book("Преступление и наказание", "Достоевский Ф.М.", 1866, "Роман"));
             books.Add(new Book("Мастер и Маргарита", "Булгаков М.А.", 1967, "Фэнтези"));
         }
 
-        public void RemoveBookAt(int index)
+        public void RemoveBookAt(int index) // Удаляет книгу по индексу
         {
             if (index >= 0 && index < books.Count)
             {
@@ -87,13 +85,13 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             }
         }
 
-        public bool RemoveBook(Book book)
+        public bool RemoveBook(Book book) // Удаляет конкретный обьект книги
         {
             bool removedFromBooks = books.Remove(book);
             return removedFromBooks;
         }
 
-        public Book GetBookAt(int index)
+        public Book GetBookAt(int index) // Получает книгу по индексу
         {
             if (index >= 0 && index <= books.Count)
             {
@@ -104,7 +102,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
 
 
 
-        public void SaveToCSV(string filePath)
+        public void SaveToCSV(string filePath) // Сохраняет все книги в CSV
         {
             using (StreamWriter sw = new StreamWriter(filePath, false, System.Text.Encoding.UTF8))
             {
@@ -113,15 +111,15 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
                 foreach (var book in books)
                 {
                     string title = book.Title.Replace("\"", "\"\"");
-                    string author = book.Notes.Replace("\"", "\"\"");
-                    string genre = book.Notes.Replace("\"", "\"\"");
+                    string author = book.Author.Replace("\"", "\"\"");
+                    string genre = book.Genre.Replace("\"", "\"\"");
                     string notes = book.Notes.Replace("\"", "\"\"");
-                    sw.WriteLine($"\"{title}\";\"{book.Author}\";{book.Year};\"{book.Genre}\";{book.DateAdded:yyyy-MM-dd HH:mm:ss};\"{notes}\"");
+                    sw.WriteLine($"\"{title}\";\"{author}\";{book.Year};\"{genre}\";{book.DateAdded:yyyy-MM-dd HH:mm:ss};\"{notes}\"");
                 }
             }
         }
 
-        public void LoadFromCSV(string filePath)
+        public void LoadFromCSV(string filePath) // Загружает книги из CSV
         {
             books.Clear();
 
@@ -175,7 +173,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             }
         }
 
-        private string[] SplitCSVLine(string line)
+        private string[] SplitCSVLine(string line) // Разделяет строку на части с учетом кавычек
         {
             List<string> result = new List<string>();
             bool inQuotes = false;
@@ -202,7 +200,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
             return result.ToArray();
         }
 
-        private string RemoveQuotes(string text)
+        private string RemoveQuotes(string text) // Удаляет кавычки
         {
             return text.Trim().Trim('"').Replace("\"\"", "\"");
         }
@@ -210,7 +208,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
 
 
 
-        public void SortBooksByTitle(bool ascending = true)
+        public void SortBooksByTitle(bool ascending = true) // Сортировка по названию
         {
             if (ascending)
                 books = books.OrderBy(b => b.Title).ToList();
@@ -218,7 +216,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
                 books = books.OrderByDescending(b => b.Title).ToList();
         }
 
-        public void SortBooksByAuthor(bool ascending = true)
+        public void SortBooksByAuthor(bool ascending = true) // Сортировка по автору
         {
             if (ascending)
                 books = books.OrderBy(b => b.Author).ToList();
@@ -226,14 +224,14 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
                 books = books.OrderByDescending(b => b.Author).ToList();
         }
 
-        public void SortBooksByYear(bool ascending = true)
+        public void SortBooksByYear(bool ascending = true) // Сортировка по году
         {
             if (ascending)
                 books = books.OrderBy(b => b.Year).ToList();
             else
                 books = books.OrderByDescending(b => b.Year).ToList();
         }
-        public void SortBooksByDateAdded(bool ascending = true)
+        public void SortBooksByDateAdded(bool ascending = true) // Сортировка по дате добавления
         {
             if (ascending)
                 books = books.OrderBy(b => b.DateAdded).ToList(); 
@@ -242,7 +240,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4.Lib
         }
 
 
-        public bool UpdateBook(Book oldBook, Book updateBook)
+        public bool UpdateBook(Book oldBook, Book updateBook) // Обновление данных о книге
         {
             int index = books.IndexOf(oldBook);
             if (index >= 0)

@@ -13,10 +13,10 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 {
     public partial class FormEditBook_KAE : Form
     {
-        public Book EditedBook { get; private set; }
+        public Book EditedBook { get; private set; } // Свойство для передачи книги обратно
 
 
-        public FormEditBook_KAE(Book bookToEdit)
+        public FormEditBook_KAE(Book bookToEdit) // Конструктор
         {
             InitializeComponent();
             EditedBook = bookToEdit;
@@ -25,7 +25,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             UpdateSaveButtonState();
         }
 
-        private void LoadBookData()
+        private void LoadBookData() // Загрзка данных о книге
         {
             textBoxTitle_KAE.Text = EditedBook.Title;
             textBoxAuthor_KAE.Text = EditedBook.Author;
@@ -35,7 +35,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             richTextBoxNotes_KAE.Text = EditedBook.Notes ?? "";
         }
 
-        private void WireUpEvents()
+        private void WireUpEvents() // Обработчик событий
         {
             textBoxTitle_KAE.TextChanged += ValidateFields;
             textBoxAuthor_KAE.TextChanged += ValidateFields;
@@ -43,7 +43,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             buttonCancel_KAE.Click += buttonCancel_KAE_Click;
         }
 
-        private void ValidateFields(object sender, EventArgs e)
+        private void ValidateFields(object sender, EventArgs e) // Проверяет обязательные поля
         {
             bool titleOk = !string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text);
             bool authorOk = !string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text);
@@ -53,9 +53,9 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             textBoxAuthor_KAE.BackColor = authorOk ? Color.White : Color.LightPink;
 
             UpdateSaveButtonState();
-        }
+        } 
 
-        private void UpdateSaveButtonState()
+        private void UpdateSaveButtonState() // Обновляет состояние кнпоки
         {
             bool titleOk = !string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text);
             bool authorOk = !string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text);
@@ -84,7 +84,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             }
         }
 
-        private void FormEditBook_KAE_Load(object sender, EventArgs e)
+        private void FormEditBook_KAE_Load(object sender, EventArgs e) // Доп инициализация
         {
             UpdateSaveButtonState();
         }
@@ -94,7 +94,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
         }
 
-        private void buttonSave_KAE_Click(object sender, EventArgs e)
+        private void buttonSave_KAE_Click(object sender, EventArgs e) // Обработчик нажатия кнопки
         {
             EditedBook.Title = textBoxTitle_KAE.Text.Trim();
             EditedBook.Author = textBoxAuthor_KAE.Text.Trim();
@@ -106,7 +106,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             this.Close();
         }
 
-        private void buttonCancel_KAE_Click(object sender, EventArgs e)
+        private void buttonCancel_KAE_Click(object sender, EventArgs e) // Обработчик нажатия кнопки
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();

@@ -13,9 +13,9 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 {
     public partial class AddBookForm_KAE : Form
     {
-        public Book NewBook { get; private set; }
+        public Book NewBook { get; private set; } // Свойство передачи книги в главную форму
 
-        public AddBookForm_KAE()
+        public AddBookForm_KAE() // Конструктор формы
         {
             InitializeComponent();
             NewBook = new Book();
@@ -24,7 +24,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             textBoxAuthor_KAE.TextChanged += CheckedFieldsAuthor;
         }
 
-        private void UpdateAddButtonState()
+        private void UpdateAddButtonState() // Состояние кнопки добавления
         {
             bool titleOk = !string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text);
             bool authorOk = !string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text);
@@ -50,14 +50,14 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         }
 
 
-        private void CheckedFieldsTitle(object sender, EventArgs e)
+        private void CheckedFieldsTitle(object sender, EventArgs e) // Валидация поля с названием
         {
             bool titleOk = !string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text);
             textBoxTitle_KAE.BackColor = titleOk ? Color.White : Color.LightPink;
             UpdateAddButtonState();
         }
 
-        private void CheckedFieldsAuthor(object sender, EventArgs e)
+        private void CheckedFieldsAuthor(object sender, EventArgs e) // Валидация поля с автором
         {
             bool authorOk = !string.IsNullOrWhiteSpace(textBoxAuthor_KAE.Text);
             textBoxAuthor_KAE.BackColor = authorOk ? Color.White : Color.LightPink;
@@ -69,7 +69,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
         }
 
-        private void buttonOk_KAE_Click(object sender, EventArgs e)
+        private void buttonOk_KAE_Click(object sender, EventArgs e) // Обработчик кнопки
         {
             if (string.IsNullOrWhiteSpace(textBoxTitle_KAE.Text))
             {
@@ -83,7 +83,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             NewBook.Year = (int)numericYear_KAE.Value;
             NewBook.Genre = textBoxGenre_KAE.Text;
 
-            this.DialogResult |= DialogResult.OK;
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

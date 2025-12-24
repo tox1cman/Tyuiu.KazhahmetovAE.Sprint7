@@ -8,7 +8,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 {
     public partial class FormMain_KAE : Form
     {
-        private LibraryService libraryService;
+        private LibraryService libraryService; // Работа с библиотекой
 
         public FormMain_KAE()
         {
@@ -47,16 +47,16 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             this.KeyPreview = true;
             this.KeyDown += FormMain_KeyDown;
             textBoxSearch_KAE.TextChanged += textBoxSearch_KAE_TextChanged;
-        }
+        } // Инициализация
 
         private void ShowBooks()
         {
             ShowSortedBooks(libraryService.GetAllBooks());
 
 
-        }
+        } // Показывает книги
 
-        private void UpdateBookCount()
+        private void UpdateBookCount() // Обновляет счетчик книг
         {
             int count = libraryService.GetBookCount();
             labelBookCount_KAE.Text = $"Всего книг: {count}";
@@ -78,14 +78,15 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 {
                     libraryService.AddBook(inputForm.NewBook);
 
-                    comboBoxSort_KAE_SelectedIndexChanged(null, null);
+                    UpdateBookCount();
+                    ShowBooksWithSearch();
                 }
             }
-        }
+        } // Добавление новой книги (кнопка)
         private void booksMenuAdd_KAE_Click(object sender, EventArgs e)
         {
             buttonAddBook_KAE_Click(sender, e);
-        }
+        } // Добавление новой книги (меню)
 
 
         private void загрузитьБиблиотекуCtrlOToolStripMenuItem_Click(object sender, EventArgs e)
@@ -98,7 +99,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
         }
 
-        private void fileMenuExit_KAE_Click(object sender, EventArgs e)
+        private void fileMenuExit_KAE_Click(object sender, EventArgs e) // Выход из приложения
         {
             DialogResult result = MessageBox.Show(
                 "Вы уверены, что хотите выйти?",
@@ -114,7 +115,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
 
 
 
-        private void DeleteSelectedBook()
+        private void DeleteSelectedBook() // Удаление выбранной книги
         {
             if (listBoxBooks_KAE.SelectedIndex == -1)
             {
@@ -160,7 +161,6 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             }
 
         }
-
         private void buttonDeleteBook_KAE_Click(object sender, EventArgs e)
         {
             DeleteSelectedBook();
@@ -171,7 +171,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         }
 
 
-        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        private void FormMain_KeyDown(object sender, KeyEventArgs e) // Обработка горячих клавиш
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -225,9 +225,9 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             }
 
 
-        }
+        } // Сохранение
 
-        private void fileMenuLoad_KAE_Click(object sender, EventArgs e)
+        private void fileMenuLoad_KAE_Click(object sender, EventArgs e) // Загрузка
         {
             if (libraryService.GetBookCount() > 0)
             {
@@ -254,7 +254,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                     libraryService.LoadFromCSV(openDialog.FileName);
                     SaveLibraryPath(openDialog.FileName);
 
-                    ShowBooks();
+                    ShowBooksWithSearch();
                     UpdateBookCount();
 
                     MessageBox.Show($"Библиотека загружена!", "Успех");
@@ -276,7 +276,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             fileMenuLoad_KAE_Click(sender, e);
         }
 
-        private void SaveLibraryPath(string path)
+        private void SaveLibraryPath(string path) // Путь файла
         {
             try
             {
@@ -298,7 +298,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             return "";
         }
 
-        private void comboBoxSort_KAE_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxSort_KAE_SelectedIndexChanged(object sender, EventArgs e) // Сортировка
         {
             if (comboBoxSort_KAE.SelectedIndex == -1)
             {
@@ -343,7 +343,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             ShowBooksWithSearch();
 
         }
-        private void ShowSortedBooks(List<Book> booksToShow)
+        private void ShowSortedBooks(List<Book> booksToShow) // Отображение
         {
             listBoxBooks_KAE.Items.Clear();
 
@@ -361,7 +361,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         }
 
 
-        private void EditSelectedBook()
+        private void EditSelectedBook() // Редактирование
         {
             if (listBoxBooks_KAE.SelectedIndex == -1)
             {
@@ -415,7 +415,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             {
                 ShowSortedBooks(libraryService.GetAllBooks());
             }
-        }
+        } // Обновление после изменений
 
         private void buttonEditBook_KAE_Click(object sender, EventArgs e)
         {
@@ -433,7 +433,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
         }
 
 
-        private void ShowBooksWithSearch()
+        private void ShowBooksWithSearch() // Поиск
         {
             string searchText = textBoxSearch_KAE.Text.Trim().ToLower();
             var allBooks = libraryService.GetAllBooks();
@@ -448,7 +448,7 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             ShowBooksInListBox(allBooks);
         }
 
-        private void ShowBooksInListBox(List<Book> books)
+        private void ShowBooksInListBox(List<Book> books) // Отображение после поиска
         {
             listBoxBooks_KAE.Items.Clear();
 
@@ -457,16 +457,18 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
                 listBoxBooks_KAE.Items.Add(book.ToString());
             }
 
+            UpdateBookCount();
+
         }
 
         private void textBoxSearch_KAE_TextChanged(object sender, EventArgs e)
         {
             ShowBooksWithSearch();
 
-        }
+        } 
 
 
-        private List<Book> GetCurrentDisplayedBooks()
+        private List<Book> GetCurrentDisplayedBooks() // Отображение текущего списка
         {
             string searchText = textBoxSearch_KAE.Text.Trim().ToLower();
             var allBooks = libraryService.GetAllBooks();
@@ -481,13 +483,13 @@ namespace Tyuiu.Kazhahmetov.Sprint7.V4
             return allBooks;
         }
 
-        private void helpMenuAbout_KAE_Click(object sender, EventArgs e)
+        private void helpMenuAbout_KAE_Click(object sender, EventArgs e) // О программе
         {
-            FormAbout_KAE fm = new FormAbout_KAE();
+            FormAbout_KAE fm = new FormAbout_KAE(); 
             fm.ShowDialog();
         }
 
-        private void инструкцияToolStripMenuItem_Click(object sender, EventArgs e)
+        private void инструкцияToolStripMenuItem_Click(object sender, EventArgs e) // Инструкция
         {
             FormInfo_KAE fi = new FormInfo_KAE();
             fi.ShowDialog();
